@@ -1,29 +1,43 @@
-import React, {useState} from 'react';
-import '../styles/ContactForm.css';
-// import facebook from './image/facebook.png'
-import instagram from './image/instagram.png'
-// import x from './image/x.png'
-import whatsapp from './image/whatsapp.png'
+import React, { useState } from 'react';
 import axios from 'axios';
+import ReCAPTCHA from 'react-google-recaptcha';
+import '../styles/ContactForm.css';
+import instagram from './image/instagram.png';
+import whatsapp from './image/whatsapp.png';
 
 const ContactForm: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [status, setStatus] = useState('');
+
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
+    if (!captchaToken) {
+      setStatus('Please complete the CAPTCHA');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/mail/contact', {
         name,
         email,
         message,
+        captchaToken,
       });
-  
+
       if (response.data.success) {
         setStatus('Message sent successfully!');
+        setName('');
+        setEmail('');
+        setMessage('');
+        setCaptchaToken(null);
       } else {
         setStatus('Failed to send message.');
       }
@@ -31,11 +45,11 @@ const ContactForm: React.FC = () => {
       setStatus('An error occurred while sending the message.');
     }
   };
-  
+
   return (
     <section id='contact' className="contact">
       <h2>Get in Touch</h2>
- <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Name"
@@ -56,10 +70,14 @@ const ContactForm: React.FC = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
+        <ReCAPTCHA
+          sitekey="6LebYkQqAAAAAMSb-7k0tZJxcGSf8c47qthHV-40"
+          onChange={handleCaptchaChange}
+        />
         <button type="submit">Send</button>
       </form>
       {status && <p>{status}</p>}
-      <br/>
+      <br />
       <div className="contact-info">
         <div className="info-wrapper">
           <div className="contact-details">

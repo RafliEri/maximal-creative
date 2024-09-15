@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import axios from 'axios';
 
 @Injectable()
 export class MailService {
@@ -15,7 +16,20 @@ export class MailService {
     });
   }
 
-  async sendContactForm(name: string, email: string, message: string) {
+  async verifyCaptcha(captchaToken: string): Promise<boolean> {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`
+    );
+    return response.data.success;
+  }
+
+  async sendContactForm(name: string, email: string, message: string, captchaToken: string) {
+    const captchaVerified = await this.verifyCaptcha(captchaToken);
+    if (!captchaVerified) {
+      return { success: false, message: 'Failed CAPTCHA verification' };
+    }
+
     const mailOptions = {
       from: email,
       to: process.env.ADMIN_EMAIL,
