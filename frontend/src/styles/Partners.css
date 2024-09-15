@@ -1,0 +1,41 @@
+.partners {
+  padding: 80px 18rem;
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.partners h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #f37b1d;
+}
+
+.partners-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.partners-list img {
+  width: 150px;
+  height: 100px;
+  object-fit: contain;
+  transition: transform 0.3s;
+}
+
+.partners-list img:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+  .partners {
+      padding: 80px 8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .partners {
+      padding: 80px 2rem;
+  }
+}
