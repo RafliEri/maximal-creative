@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/ContactForm.css';
@@ -11,6 +11,8 @@ const ContactForm: React.FC = () => {
   const [message, setMessage] = useState('');
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [status, setStatus] = useState('');
+
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
@@ -25,7 +27,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/mail/contact', {
+      const response = await axios.post(process.env.REACT_APP_API_URL || 'https://api.maximal-creative.com/api'+'/mail/contact' , {
         name,
         email,
         message,
@@ -37,7 +39,11 @@ const ContactForm: React.FC = () => {
         setName('');
         setEmail('');
         setMessage('');
-        setCaptchaToken(null);
+        if (recaptchaRef.current) {
+          recaptchaRef.current.reset();
+        }
+
+        setCaptchaToken(null); 
       } else {
         setStatus('Failed to send message.');
       }
