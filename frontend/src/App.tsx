@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import './styles/Loading.css';
 import logo from './components/image/max-logo.png'
 
+
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 

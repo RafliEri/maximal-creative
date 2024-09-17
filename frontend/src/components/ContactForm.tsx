@@ -2,10 +2,13 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/ContactForm.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import instagram from './image/instagram.png';
 import whatsapp from './image/whatsapp.png';
 
 const ContactForm: React.FC = () => {
+  const SwalKu = withReactContent(Swal);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -35,6 +38,7 @@ const ContactForm: React.FC = () => {
       });
 
       if (response.data.success) {
+        
         setStatus('Message sent successfully!');
         setName('');
         setEmail('');
@@ -42,10 +46,19 @@ const ContactForm: React.FC = () => {
         if (recaptchaRef.current) {
           recaptchaRef.current.reset();
         }
-
         setCaptchaToken(null); 
+        SwalKu.fire(
+          <h5>Berhasil mengirim pesan.</h5>
+        ).then(() => {
+          window.location.reload();
+        })
       } else {
         setStatus('Failed to send message.');
+        SwalKu.fire(
+          <h5>Failed to send message.</h5>
+        ).then(() => {
+          window.location.reload();
+        })
       }
     } catch (error) {
       setStatus('An error occurred while sending the message.');
