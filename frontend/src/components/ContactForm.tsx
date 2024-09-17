@@ -13,7 +13,6 @@ const ContactForm: React.FC = () => {
   const [status, setStatus] = useState('');
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
@@ -77,7 +76,7 @@ const ContactForm: React.FC = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <ReCAPTCHA
-          sitekey="6LebYkQqAAAAAMSb-7k0tZJxcGSf8c47qthHV-40"
+          sitekey= {process.env.REACT_APP_RECAPTCHA_SITE_KEY || ''}
           onChange={handleCaptchaChange}
         />
         <button type="submit">Send</button>
