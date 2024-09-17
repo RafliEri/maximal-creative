@@ -13,10 +13,10 @@ const ContactForm: React.FC = () => {
   const [status, setStatus] = useState('');
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const ContactForm: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(process.env.REACT_APP_API_URL || 'https://api.maximal-creative.com/api'+'/mail/contact' , {
+      const response = await axios.post('https://api.maximal-creative.com/mail/contact' , {
         name,
         email,
         message,
