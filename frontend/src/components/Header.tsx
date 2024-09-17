@@ -35,10 +35,12 @@ const Header: React.FC = () => {
   return (
     <header className={`header ${isSticky ? 'sticky' : ''}`}>
       <div className="container">
+        <a href="#hero" onClick={(e) => handleMenuClick(e, 'hero')}> 
         <div className="logo-container">
           <img src={logo} alt="Logo" className="logo-img" />
           <h1 className="logo">MAXIMAL CREATIVE</h1>
         </div>
+          </a>
         <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
           <ul>
             <li><a href="#services" onClick={(e) => handleMenuClick(e, 'services')}>Services</a></li>
