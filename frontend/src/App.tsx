@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 2000);
   }, []);
 
   if (loading) {
@@ -24,6 +24,10 @@ const App: React.FC = () => {
       <div className="loader-container">
         <div className="loader">
           <img src={logo} alt="Loading" />
+          <div className="loading-text">
+            <span className="word">MAXIMAL</span>
+            <span className="word">CREATIVE</span>
+          </div>
         </div>
       </div>
     );
